@@ -1,8 +1,0 @@
-#Mercury(name,color,size,mass,r,v)
-
-Mercury
-orange
-5e9
-0.330e24
-57.9e9
-0,47.4e3
