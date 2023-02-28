@@ -1,8 +1,0 @@
-#Earth(name,color,size,mass,r,v)
-
-Earth
-blue
-9e9
-5.97e24
-149.6e9
-0,29.8e3
