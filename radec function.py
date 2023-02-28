@@ -3,13 +3,7 @@ from astropy.time import Time
 import numpy as np
 import astropy.units as u
 
-"""
-#################### CODE BUGS #####################
-Altitude??? Unsure. Just set as Radius Earth 6.3781e6 + NUM
 
-radec() func is not fully functional
-    #TIME GMT Should try fix...
-    Altitude
 #################### CODE NOTES ####################
 (ENU) system uses the Cartesian coordinates (xEast,yNorth,zUp) to represent position relative to a local origin.
 
