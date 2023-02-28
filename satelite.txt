@@ -1,0 +1,8 @@
+#(name, color, size, mass, r(initial position), v(Velocity))
+
+Satelite
+black
+0.25e10
+1025
+150e9
+11297,29320
