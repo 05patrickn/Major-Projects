@@ -1,8 +1,0 @@
-#Sun(name,color,size,mass,r,v)
-
-Sun
-yellow
-19e9
-1.989e30
-0
-0,0
