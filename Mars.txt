@@ -1,8 +1,0 @@
-#Mars(name,color,size,mass,r,v)
-
-Mars
-red
-7e9
-0.642e24
-228.0e9
-0,24.1e3
