@@ -1,32 +1,54 @@
- from astropy.coordinates import SkyCoord, EarthLocation, ICRS, AltAz, FK5, solar_system_ephemeris, get_body
+from astropy.coordinates import SkyCoord, EarthLocation, ICRS, AltAz, solar_system_ephemeris, get_body
 from astropy.time import Time
 import numpy as np
 import astropy.units as u
+import pandas as pd
+import geopy
+from geopy import distance
+import math
+from GenerateStarList import matrix_multiply
 
-
-#################### CODE NOTES ####################
-(ENU) system uses the Cartesian coordinates (xEast,yNorth,zUp) to represent position relative to a local origin.
-
-(AltAZ) A coordinate or frame in the Altitude-Azimuth system (Horizontal coordinates) with respect to the WGS84 ellipsoid. 
-Azimuth is oriented East of North (i.e., N=0, E=90 degrees). 
-Altitude is also known as elevation angle, so this frame is also in the Azimuth-Elevation system.
-
-(ICRS) The International Celestial Reference System (ICRS) is a celestial coordinate system fixed to the stars/constellations as would be seen from the Sun, or more precisely, from the barycenter of the solar system.
- It specifies the coordinate's epoch as J2000. 0.
- ###################################################
-"""
-
-with open('ConfigFile.txt') as f:
-    for line in f:
-        if line.startswith('//Star Name:'):
-            star_name = line.strip().split(':')[1].strip()
-        elif line.startswith('//Latitude:'):
-            latitude = float(line.strip().split(':')[1].strip())
-        elif line.startswith('//Longitude:'):
-            longitude = float(line.strip().split(':')[1].strip())
-        elif line.startswith('//Elevation:'):
-            elevation = float(line.strip().split(':')[1].strip())
  
+ ###################################################
+
+def radec_planet(planet_name, origin_camera_system):
+    results = []
+    for i in range(len(planet_name['//TIMEUTC'])):
+        # set the location and time
+        location = EarthLocation(lat=origin_camera_system["//Latitude N:"]*u.deg, 
+                                 lon=origin_camera_system["//Longitude E:"]*u.deg, 
+                                 height=origin_camera_system["//Elevation in m"]*u.m)       
+        time = Time(str(planet_name.iloc[i, planet_name.columns.get_loc('//TIMEUTC')]), 
+                    format="isot",  scale='utc')
+        
+        observationFrame = AltAz(obstime=time, location=location)
+        with solar_system_ephemeris.set('jpl'):
+            planet = get_body(str(planet_name.iloc[1, 0]), time, location)
+    
+        planetFromFrame = planet.transform_to(observationFrame)
+        
+        # XYZ position
+        
+        x = -np.cos(planetFromFrame.alt.rad)*np.cos(planetFromFrame.az.rad)*10**8 # points to zenith
+        y = np.cos(planetFromFrame.alt.rad)*np.sin(planetFromFrame.az.rad)*10**8  # points to N
+        z = np.sin(planetFromFrame.alt.rad)*10**8 # points to E
+
+        # append the results to a list of dictionaries
+        results.append({
+            'planet_name': str(planet_name.iloc[1, 0]),
+            'time_utc': str(time),
+            'ra':planet.ra.value[0]/15 ,
+            'dec':planet.dec.value[0] ,
+            'x': x[0],
+            'y': y[0],
+            'z': z[0]
+        })
+        return x,y,z
+        
+    # convert the list of dictionaries to a Pandas dataframe
+    df = pd.DataFrame(results)
+    df.to_csv("results2.txt", sep="\t", index=True, header=True)
+    return df 
 #Calculate RA & DEC of star from a given position
 def radec(star_name, latitude, longitude, elevation):
 
@@ -44,4 +66,15 @@ def radec(star_name, latitude, longitude, elevation):
     print("RA: ", starpos.ra.value)
     print("Dec: ", starpos.dec.value)
     
-radec(star_name, latitude, longitude, elevation)
+def main():
+    #Config file reader (Note structure of config file)
+    jupiter= pd.read_excel('ConfigFile.xlsx', sheet_name='jupiter')
+    sirius = pd.read_excel('ConfigFile.xlsx', sheet_name='sirius')
+    origin_camera_system= pd.read_excel('ConfigFile.xlsx', sheet_name='origin_camera_system')
+    camera_position=pd.read_excel('ConfigFile.xlsx', sheet_name='camera_position')
+
+
+    #Call Functions
+    #radec_star(sirius, origin_camera_system)
+    #radec_planet(jupiter, origin_camera_system)
+    calculate_distance(camera_position)
