@@ -5,6 +5,7 @@ Note: Sun is yellow, Mercury is orange, Venus is brown, Earth is blue, Mars is r
 Planetary data obtained from https://nssdc.gsfc.nasa.gov/planetary/factsheet/
 """
 
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
