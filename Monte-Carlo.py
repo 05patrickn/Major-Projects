@@ -4,7 +4,6 @@ import random
 from scipy.special import comb
 from scipy.stats import norm
 
-
 def hop_flea(x):
 
     N = len(x)
