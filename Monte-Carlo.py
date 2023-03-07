@@ -4,21 +4,21 @@ import random
 from scipy.special import comb
 from scipy.stats import norm
 
-def hop_flea(x):
+def monte_carlo(x):
 
     N = len(x)
-    i = random.randint(0, N-1)  # pick a random flea
-    x[i] = 1 - x[i]            # hop the flea from dog 1 to dog 2
+    i = random.randint(0, N-1)  
+    x[i] = 1 - x[i]            
     return x
 
 N = [50, 100, 200, 500]
 for N in N:   
-    x = [1]*N  # initial configuration (all on first dog)
+    x = [1]*N  
     T=20*N
     N1 = np.ones(T)
     Sarray = np.array([np.log(comb(N, N))])
     for t in range(0, T):
-        x = hop_flea(x)
+        x = monte_carlo(x)
         N1[t] = np.sum(x)
         Sarray = np.append(Sarray, np.log(comb(N, N1[t])))
     
@@ -35,13 +35,13 @@ for N in N:
     fig1.suptitle(f'N = {N}')
     
 
-N = 500  # number of fleas
-x = [1]*N  # initial configuration (all on first dog)
+N = 500  
+x = [1]*N  
 T=10000
 N1 = np.ones(T)
 
 for t in range(0, T):
-    x = hop_flea(x)
+    x = monte_carlo(x)
     N1[t] = np.sum(x)
 
 N1_last_half = N1[T//2:]
