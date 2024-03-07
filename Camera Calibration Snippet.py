@@ -9,7 +9,7 @@ import math
 from GenerateStarList import matrix_multiply
 
  
- ###################################################
+ ############################## Note this is a section of the code, the rest is protected for intellectual property. #########################
 
 def radec_planet(planet_name, origin_camera_system):
     results = []
@@ -27,11 +27,7 @@ def radec_planet(planet_name, origin_camera_system):
     
         planetFromFrame = planet.transform_to(observationFrame)
         
-        # XYZ position
-        
-        x = -np.cos(planetFromFrame.alt.rad)*np.cos(planetFromFrame.az.rad)*10**8 # points to zenith
-        y = np.cos(planetFromFrame.alt.rad)*np.sin(planetFromFrame.az.rad)*10**8  # points to N
-        z = np.sin(planetFromFrame.alt.rad)*10**8 # points to E
+
 
         # append the results to a list of dictionaries
         results.append({
