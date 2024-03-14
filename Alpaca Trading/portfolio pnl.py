@@ -2,8 +2,8 @@ import alpaca_trade_api as tradeapi
 from datetime import datetime
 
 # Initialize Alpaca API
-API_KEY = "PKBL1QALIATJ883NK37N"
-SECRET_KEY = "5nFTdbXqa5mVKUzOShjtyCfpFc8HwXRM5BxqVdlA"
+API_KEY = ""
+SECRET_KEY = ""
 api = tradeapi.REST(API_KEY, SECRET_KEY, base_url='https://paper-api.alpaca.markets')
 
 # Get open positions
