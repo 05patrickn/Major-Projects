@@ -3,8 +3,8 @@ from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 
-API_KEY = "PKBL1QALIATJ883NK37N"
-SECRET_KEY = "5nFTdbXqa5mVKUzOShjtyCfpFc8HwXRM5BxqVdlA"
+API_KEY = ""
+SECRET_KEY = ""
 
 trading_client = TradingClient(API_KEY, SECRET_KEY, paper=True)
 
